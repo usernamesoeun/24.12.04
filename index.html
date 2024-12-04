@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>우리 곁으로 돌아온 국가유산</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #map-container {
+      position: relative;
+      width: 600px;
+      height: 600px;
+    }
+
+    #korea-map {
+      width: 100%;
+      position: relative;
+      z-index: -1;
+    }
+
+    #floating-icons {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .heritage {
+      position: absolute;
+      font-size: 24px;
+      cursor: pointer;
+      animation: float 5s infinite ease-in-out;
+      z-index: 1;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    #popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border: 1px solid #ccc;
+      padding: 20px;
+      z-index: 10;
+      text-align: center;
+      max-width: 80%;
+      overflow: hidden;
+    }
+
+    #popup img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* 어두운 배경 */
+    #dark-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 5;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    /* 파동 효과 */
+    @keyframes wave {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .wave-effect {
+      animation: wave 1s infinite;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* 파장 효과 */
+    .wave {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.3);
+      animation: wave-animation 1s infinite linear;
+      z-index: 3;
+      pointer-events: none;
+      border-radius: 50%;
+    }
+
+    @keyframes wave-animation {
+      0% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(1.2);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="dark-overlay"></div>
+  <div id="map-container">
+    <img id="korea-map" src="korea.svg" alt="한반도 지도">
+    <div id="floating-icons">
+      <div class="heritage" id="heritage-1" data-description="한일관계사료집-국제연맹제출 조일관계사료집-
+      " data-image="image1.jpg">🏺</div>
+      <div class="heritage" id="heritage-2" data-description="백자청화정부인양주조씨묘지" data-image="image2.jpg">🏺</div>
+      <div class="heritage" id="heritage-3" data-description="민티어 부부 기증 사진자료
+      " data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-4" data-description="민티어 부부 기증 회화유물 등" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-5" data-description="조선 후기 회화" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-6" data-description="백자철화이성립묘지" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-7" data-description="재미동포 김대영 소장품" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-8" data-description="자수화조병풍 낱폭" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-9" data-description="백자청화이기하묘지" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-10" data-description="백자청화김경온묘지" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-11" data-description="혼례용 단령" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-12" data-description="재미동포 김대영 자료" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-13" data-description="고고유물" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-14" data-description="박정양 친필 편지" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-15" data-description="변성규 작 기명절지도" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-16" data-description="산수도" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-17" data-description="능행도 인쇄본" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-18" data-description="조선시대 문인석" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-19" data-description="신흥사 제반문 경판" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-20" data-description="1950년대 미군 촬영 기록사진" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-21" data-description="독립운동가 송일성 자료" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-22" data-description="조선시대 갑옷" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-23" data-description="옥천사 나한상" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-24" data-description="분청사기상감‘경태5년명’
+이선제 묘지" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-25" data-description="선암사 동악당 재인대선사 진영" data-image="image3.jpg">🏺</div>
+      <div class="heritage" id="heritage-25" data-description="석가삼존도" data-image="image3.jpg">🏺</div>
+    </div>
+  </div>
+  <div id="popup" class="hidden">
+    <div id="popup-text"></div>
+  </div>
+
+  <audio id="background-music" src="backmusic.mp3"></audio>
+
+  <script>
+    const icons = document.querySelectorAll('.heritage');
+    const popup = document.getElementById('popup');
+    const popupText = document.getElementById('popup-text');
+    const mapContainer = document.getElementById('map-container');
+    const darkOverlay = document.getElementById('dark-overlay');
+    const backgroundMusic = document.getElementById('background-music');
+    let waveElement = null; // 파장 효과 요소를 추적할 변수
+
+    // 랜덤으로 위치 설정 (겹치지 않게)
+    function randomizePositions() {
+      const usedPositions = [];
+      icons.forEach(icon => {
+        let position;
+        do {
+          const x = Math.random() * 90; // 0~90%
+          const y = Math.random() * 90; // 0~90%
+          position = `${x.toFixed(2)}% ${y.toFixed(2)}%`;
+        } while (usedPositions.includes(position));
+        usedPositions.push(position);
+        icon.style.left = position.split(' ')[0];
+        icon.style.top = position.split(' ')[1];
+      });
+    }
+
+    // 각 아이콘 클릭 시 팝업 표시
+    icons.forEach(icon => {
+      icon.addEventListener('click', () => {
+        const description = icon.dataset.description;
+        const image = icon.dataset.image;
+
+        // 팝업 내용을 갱신
+        popupText.innerHTML = `<img src="${image}" alt="유물 이미지"><p>${description}</p>`;
+        popup.classList.remove('hidden');
+        darkOverlay.style.opacity = 1;
+
+        // 배경음악 재생
+        backgroundMusic.play();
+
+        // 배경에 파장 효과 추가
+        waveElement = document.createElement('div');
+        waveElement.classList.add('wave');
+        mapContainer.appendChild(waveElement);
+      });
+    });
+
+    // 팝업 닫기
+    document.body.addEventListener('click', (e) => {
+      if (!popup.contains(e.target) && !e.target.classList.contains('heritage')) {
+        popup.classList.add('hidden');
+        darkOverlay.style.opacity = 0;
+
+        // 배경음악 중지
+        backgroundMusic.pause();
+        backgroundMusic.currentTime = 0;
+
+        // 배경 파장 효과 제거
+        if (waveElement) {
+          waveElement.remove();
+          waveElement = null;
+        }
+      }
+    });
+
+    // 초기화
+    randomizePositions();
+  </script>
+</body>
+</html>
